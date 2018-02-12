@@ -39,7 +39,14 @@ UserRepository.prototype.create = function (user) {
  * @return User
  */
 UserRepository.prototype.findOneById = function (id) {
+    if(!id)
+       throw "No user id";
+  
+    var user = this.db.get('users').find({id: id}).value();
+    if(user == null)
+        throw "user doesn't exist";
 
+    return user;
 };
 
 /**
@@ -47,7 +54,17 @@ UserRepository.prototype.findOneById = function (id) {
  * @param {User} user
  */
 UserRepository.prototype.update = function (user) {
+    if(!user)
+        throw "User object is not define";
+  
+    if(!user.id)
+        throw "No user id";
+  
+    var updatedUser = this.db.get('users').find({id: user.id}).assign(user).write();
+    if(updatedUser == null) 
+        throw "User doesn't exist";
 
+    return updatedUser;
 };
 
 /**
@@ -55,6 +72,11 @@ UserRepository.prototype.update = function (user) {
  * @param {number} id
  */
 UserRepository.prototype.delete = function (id) {
+    if(!id)
+        throw "No user id";
+  
+    var user = this.db.get('users').remove({id: id}).write();
+    return user;
 
 };
 

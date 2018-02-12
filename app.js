@@ -14,12 +14,8 @@ app
     .get(function (req, res) {
         var id = req.params.id;
 
-        /**
-         * Implémenter ce controlleur afin qu'il rechereche en base de donnée l'utilisateur par son ID et le retourne
-         * sous format json au client.(voir le controlleur .post)
-         */
-
-        res.send('Not implemented');
+        var repository = new UserRepository(db);
+        res.send(repository.findOneById(id));
     })
 
     // Creation d'un utilisateur
@@ -40,20 +36,28 @@ app
     //mise à jour d'un utilisateur
     .put(function (req, res) {
 
-        /**
-         * Implémenter le controlleur
-         */
-
-        res.send('Not implemented');
+        var user = {};
+ 		user.id = req.body.id;
+ 		if(req.body.firstname)
+ 			user.firstname = req.body.firstname;
+ 		if(req.body.lastname) 
+ 			user.lastname = req.body.lastname;
+ 		if(req.body.birthday) 
+ 			user.birthday = req.body.birthday;
+ 
+		var repository = new UserRepository(db);
+		var updateUser = repository.update(user);
+		res.send(updateUser);
+ 
     })
 
     //suppression d'un utilisateur
     .delete(function (req, res) {
-        /**
-         * Implémenter le controlleur
-         */
+    	var id = req.params.id;
+ 		var repository = new UserRepository(db);
+ 		var deletedUser = repository.delete(id);
 
-        res.send('Not implemented');
+ 		res.send(deletedUser);
     });
 
 
